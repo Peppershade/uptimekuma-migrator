@@ -2,6 +2,13 @@
 
 This script allows you to sync/import monitors from UptimeRobot to Uptime Kuma using the Uptime Kuma API.
 
+## Features
+- Syncs monitors from UptimeRobot to Uptime Kuma.
+- Supports HTTP(s), Ping, Keyword, and Port monitors.
+- Supports skipping paused monitors.
+- Supports cleaning all existing monitors from Uptime Kuma before syncing.
+- Duplicate monitors are skipped.
+
 ## Supported Monitor Types
 While Uptime Kuma supports a wide range of monitor types, this script currently only supports the following monitor types:
 ### HTTP(s)
