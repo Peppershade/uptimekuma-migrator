@@ -1,6 +1,6 @@
 # UptimeKuma Migrator
 
-This script allows you to sync/import monitors from UptimeRobot to Uptime Kuma using the Uptime Kuma API.
+This script allows you to import monitors from UptimeRobot to Uptime Kuma using the Uptime Kuma API.
 
 ## Features
 - Syncs monitors from UptimeRobot to Uptime Kuma.
@@ -62,8 +62,8 @@ Before running the script, make sure you have the following information:
 - `uptimekuma_url`: Replace `'127.0.0.1:3001'` with the domain or IP address of your Uptime Kuma instance.
 - `uptimekuma_username`: Replace `'admin'` with your Uptime Kuma username.
 - `uptimekuma_password`: Replace `'password'` with your Uptime Kuma password.
-- `skip_paused_monitors`: Set this to `True` if you want to skip syncing paused monitors.
-- `start_clean`: Set this to `True` if you want to clean all existing monitors from Uptime Kuma before syncing.
+- `skip_paused_monitors`: Set this to `True` if you want to skip importing paused monitors.
+- `start_clean`: Set this to `True` if you want to clean all existing monitors from Uptime Kuma before importing.
 
 ## Usage
 
@@ -75,7 +75,7 @@ To run the script, execute the following command:
 The script will perform the following steps:
 
 1. Fetch monitors from UptimeRobot API.
-2. Sync each monitor to Uptime Kuma API.
+2. Import each monitor to Uptime Kuma API.
 3. Print status messages and errors for each monitor sync.
 
 Please note that the script will print verbose output during the process.
