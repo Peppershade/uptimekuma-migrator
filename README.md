@@ -1,4 +1,4 @@
-# Uptime Kuma Monitor Importer
+# UptimeKuma Migrator
 
 This script allows you to sync/import monitors from UptimeRobot to Uptime Kuma using the Uptime Kuma API.
 
