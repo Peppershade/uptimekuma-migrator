@@ -16,6 +16,7 @@ skip_paused_monitors = False  # skip paused monitors
 start_clean = False  # clean all monitors from Uptime Kuma before syncing
 
 # Uptime Kuma API login
+uptimerobot_offset = 0
 api = UptimeKumaApi(f'{uptimekuma_protocol}://{uptimekuma_url}')
 api.login(uptimekuma_username, uptimekuma_password)
 
@@ -32,22 +33,22 @@ def clean_uptimekuma_monitors():
         print(f"Monitor '{monitor['name']}' deleted from Uptime Kuma.")
     print('Done cleaning monitors from Uptime Kuma API.')
 
-
 # Fetch monitors from UptimeRobot API
 def fetch_uptimerobot_monitors():
     """
     Fetches monitor data from UptimeRobot API.
     Returns a list of monitors.
     """
-    url = "https://api.uptimerobot.com/v2/getMonitors"
+    monitor_url = "https://api.uptimerobot.com/v2/getMonitors"
 
-    payload = f"api_key={uptimerobot_api_key}&format=json&logs=1"
+    payload = f"api_key={uptimerobot_api_key}&format=json&logs=1&offset={uptimerobot_offset}"
     headers = {
         'content-type': "application/x-www-form-urlencoded",
         'cache-control': "no-cache"
     }
-    response = requests.request("POST", url, data=payload, headers=headers)
+    response = requests.request("POST", monitor_url, data=payload, headers=headers)
     data = json.loads(response.text)
+
     if data['stat'] == 'ok':
         return data['monitors']
     else:
@@ -106,13 +107,18 @@ def sync_monitor_to_uptimekuma(monitor):
     # Add KEYWORD monitor
     elif monitor['type'] == 2:
         try:
+            if monitor['keyword_type'] == 1:
+                flip = True
+            else:
+                flip = False
             api.add_monitor(
                 type=MonitorType.KEYWORD,
                 name=monitor['friendly_name'],
                 url=monitor['url'],
                 hostname=monitor['url'],
                 interval=monitor['interval'],
-                keyword=monitor['keyword_type'],
+                keyword=monitor['keyword_value'],
+                upsideDown=flip,
             )
             print(f"Monitor '{monitor['friendly_name']}' added to Uptime Kuma with type KEYWORD.")
         except UptimeKumaException as e:
@@ -160,6 +166,22 @@ if start_clean:
 # Fetch monitors from UptimeRobot API
 print('Fetching monitors from UptimeRobot API.')
 monitors = fetch_uptimerobot_monitors()
+print(f'Fetched {len(monitors)} monitors from UptimeRobot API.')
+# When there are 50 monitors, there are more monitors to fetch, limit is 50, keep going until there are no more monitors to fetch
+if len(monitors) == 50:
+    uptimerobot_offset += 50
+    print(f'Fetching monitors from UptimeRobot API with offset {uptimerobot_offset}.')
+    monitors += fetch_uptimerobot_monitors()
+if len(monitors) == 100:
+    uptimerobot_offset += 50
+    print(f'Fetching monitors from UptimeRobot API with offset {uptimerobot_offset}.')
+    monitors += fetch_uptimerobot_monitors()
+if len(monitors) == 150:
+    uptimerobot_offset += 50
+    print(f'Fetching monitors from UptimeRobot API with offset {uptimerobot_offset}.')
+    monitors += fetch_uptimerobot_monitors()
+
+
 print(f'Fetched {len(monitors)} monitors from UptimeRobot API.')
 
 # Sync each monitor to Uptime Kuma API
