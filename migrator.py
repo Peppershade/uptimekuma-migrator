@@ -120,7 +120,6 @@ def sync_monitor_to_uptimekuma(monitor):
                 hostname=monitor['url'],
                 interval=monitor['interval'],
                 keyword=monitor['keyword_value'],
-                expireNotification=expire_notification,
                 upsideDown=flip,
             )
             print(f"Monitor '{monitor['friendly_name']}' added to Uptime Kuma with type KEYWORD.")
