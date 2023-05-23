@@ -13,7 +13,7 @@ uptimekuma_password = 'password'  # your Uptime Kuma password
 
 # Options
 skip_paused_monitors = False  # skip paused monitors
-expire_notification = False  # send notification when monitor expires (HTTPS monitors only)
+expire_notification = False  # send notification when monitor SSL expires (HTTPS monitors only)
 start_clean = False  # clean all monitors from Uptime Kuma before syncing
 
 # Uptime Kuma API login
@@ -99,7 +99,7 @@ def sync_monitor_to_uptimekuma(monitor):
                 url=monitor['url'],
                 hostname=monitor['url'],
                 interval=monitor['interval'],
-                expireNotification=expire_notification,
+                expiryNotification=expire_notification,
             )
             print(f"Monitor '{monitor['friendly_name']}' added to Uptime Kuma with type HTTP.")
         except UptimeKumaException as e:
