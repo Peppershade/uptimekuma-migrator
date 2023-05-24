@@ -194,3 +194,4 @@ print('Done syncing monitors to Uptime Kuma API.')
 
 # Quit program
 print('Done!')
+quit()
